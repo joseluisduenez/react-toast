@@ -20,7 +20,7 @@ export default function Stopwatch(props) {
     return (
         <div >            
             <Button onClick={start}>Start</Button>
-            <Button onClick={stop}>Pause</Button>
+            <Button onClick={stop}>Stop</Button>
         </div>
     );
 }

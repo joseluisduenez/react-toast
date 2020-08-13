@@ -52,21 +52,35 @@ export default function Timekeeper(props) {
     const [seconds, setSeconds] = React.useState(0)
     const [minutes, setMinutes] = React.useState(0)
     const [hours, setHours] = React.useState(0)
-
-    const [data, setData] = React.useState([{ "id": "1", "name": 'Select campaign settings', "seconds": 0, "minutes": 0, "hours": 0 }, { "id": "2", "name": 'Create an ad group', "seconds": 0, "minutes": 0, "hours": 0 }, { "id": "3", "name": 'Create an ad', "seconds": 0, "minutes": 0, "hours": 0 }])
+    const [colorStyle, setColorStyle] = React.useState({ fontSize: '60px', color: '#45a339' })
+    const [data, setData] = React.useState([{ "id": "1", "name": 'Select campaign settings', "seconds": 0, "minutes": 0, "hours": 0, "redTime": 20, "yellowTime": 10 }, { "id": "2", "name": 'Create an ad group', "seconds": 0, "minutes": 0, "hours": 0, "redTime": 20, "yellowTime": 10 }, { "id": "3", "name": 'Create an ad', "seconds": 0, "minutes": 0, "hours": 0, "redTime": 20, "yellowTime": 10 }])
 
     const handleNext = (id) => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         let objIndex = data.findIndex(ob => ob.id === id);
         if ((objIndex + 1) < data.length )
-            setSeconds(data[objIndex+1].seconds)
+            setSeconds(data[objIndex + 1].seconds)
+        let style = getStyleColor(data[objIndex + 1].seconds, data[objIndex + 1].redTime, data[objIndex + 1].yellowTime)
+        setColorStyle(style)
     };
     
     const handleBack = (id) => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
         let objIndex = data.findIndex(ob => ob.id === id);
-        setSeconds(data[objIndex-1].seconds)
+        setSeconds(data[objIndex - 1].seconds)
+        let style = getStyleColor(data[objIndex - 1].seconds, data[objIndex - 1].redTime, data[objIndex - 1].yellowTime)
+        setColorStyle(style)
     };
+
+    const getStyleColor = (minutes, redTime, yellowTime) => {
+        if (minutes > yellowTime && minutes < redTime)
+            return { fontSize: '60px', color: '#91884d' }
+        else if (minutes  >= redTime) {
+            return { fontSize: '60px', color: '#c91023' }
+        }
+        else
+            return { fontSize: '60px', color: '#45a339' }
+    }
 
     const handleTimer = (id) => {
         let objIndex = data.findIndex(ob => ob.id === id);
@@ -97,6 +111,8 @@ export default function Timekeeper(props) {
             return prevData
         });
         setSeconds(sec)
+        let style = getStyleColor(sec, data[objIndex].redTime, data[objIndex].yellowTime)
+        setColorStyle(style)
     }
 
     return (
@@ -107,8 +123,8 @@ export default function Timekeeper(props) {
                         <StepLabel>{ label.name}</StepLabel>
                         <StepContent>
                              
-                                <div style={{ fontSize: '40px' }}>
-                                    <span>{hours}</span>:<span>{minutes}</span>:<span >{seconds}</span>
+                            <div style={colorStyle}>
+                                <span >{hours}</span>:<span>{minutes}</span>:<span >{seconds}</span>
 
                                 </div>
                              
