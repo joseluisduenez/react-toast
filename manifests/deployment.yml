@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toastmastersreact
+  labels:
+    app: toastmastersreact
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toastmastersreact
+  template:
+    metadata:
+      labels:
+        app: toastmastersreact
+    spec:
+      containers:
+      - name: toastmastersreact
+        image: toastmasterscontainerregistry.azurecr.io/toastmastersreact
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_HOST
+          value: https://reqbin.com/
+        - name: BACKEND_PORT
+          value: "80"  
+          
